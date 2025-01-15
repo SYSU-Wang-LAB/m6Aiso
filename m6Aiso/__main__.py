@@ -1,10 +1,22 @@
 #!/bin/python3
 import argparse
 import sys
+<<<<<<< HEAD
 from m6Aiso.script import semi_supervised_model_train
 from m6Aiso.script import molecular_m6A_predication
 from m6Aiso.script import current_signal_abstract_for_m6A_pred
 sys.path.insert(0,"./m6Aiso/blocks/")
+=======
+sys.path.insert(0,"/home/ZJRen/pytorch/m6Aiso/m6Aiso")
+sys.path.insert(0,"/home/ZJRen/pytorch/m6Aiso/")
+sys.path.insert(0,"./")
+sys.path.insert(0,"./m6Aiso/")
+sys.path.insert(0,"./m6Aiso/blocks/")
+print("\n".join(sys.path))
+from m6Aiso.script import semi_supervised_model_train
+from m6Aiso.script import molecular_m6A_predication
+from m6Aiso.script import current_signal_abstract_for_m6A_pred
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 
 def get_version():
 	version = "m6Aiso version:1.0.0"

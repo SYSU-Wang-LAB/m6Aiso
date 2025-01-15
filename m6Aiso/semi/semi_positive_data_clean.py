@@ -15,7 +15,11 @@ def pred_result_to_dict(filename):
 	f.close()
 	return out_sitename_to_value_dict,out_sitename_list
 
+<<<<<<< HEAD
 def positive_result_write(old_pos_filename,new_pos_filename,valuedict,cutoff):
+=======
+def positive_result_write(old_pos_filename,new_pos_filename,valuedict):
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	f = open(old_pos_filename,'r')
 	d = open(new_pos_filename,'a')
 	for str_x in f:
@@ -27,15 +31,39 @@ def positive_result_write(old_pos_filename,new_pos_filename,valuedict,cutoff):
 		sitename = list_x[1]
 		try:
 			value = valuedict[sitename]
+<<<<<<< HEAD
 			if value >= cutoff:
 				d.write(str_x+"\n")
 			else:
 				pass
+=======
+			d.write(str_x+"\n")
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 		except:
 			pass
 	f.close()
 	d.close()
 
+<<<<<<< HEAD
+=======
+
+def site_select_by_percentage(valuedict,sitename_list,cutoff_perventage,reverse=True):
+	unsort_value_list = []
+	for sitename in sitename_list:
+		value = valuedict[sitename]
+		unsort_value_list.append([sitename,value])
+	# reverse = False --> [[1, 2], [2, 3], [3, 7], [4, 5]]
+	# reverse = True  --> [[4, 5], [3, 7], [2, 3], [1, 2]]
+	unsort_value_list.sort(key=lambda x:x[1],reverse=reverse)
+	cutoff_number = int(cutoff_perventage * len(unsort_value_list))
+	out_dict = {}
+	for i in range(cutoff_number):
+		sitename = unsort_value_list[i][0]
+		value = unsort_value_list[i][1]
+		out_dict[sitename] = value
+	return out_dict
+
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 def false_positive_rate_count(sitename2value_dict,sitename_list,cutoff):
 	false_positive_count = 0
 	true_positive_count = 0
@@ -48,6 +76,7 @@ def false_positive_rate_count(sitename2value_dict,sitename_list,cutoff):
 	FPR = false_positive_count / (false_positive_count + true_positive_count)
 	return FPR
 
+<<<<<<< HEAD
 def positive_data_clean_and_FPR_count(pred_result_filename,uncleaned_positive_filename,cleaned_positive_filename,cutoff):
 	sitename2value_dict,sitename_list = pred_result_to_dict(filename=pred_result_filename)
 	positive_result_write(
@@ -56,10 +85,30 @@ def positive_data_clean_and_FPR_count(pred_result_filename,uncleaned_positive_fi
 		valuedict = sitename2value_dict,
 		cutoff = cutoff
 		)
+=======
+def positive_data_clean_and_FPR_count(pred_result_filename,uncleaned_positive_filename,cleaned_positive_filename,cutoff=0.5,cutoff_perventage=0.95):
+	sitename2value_dict,sitename_list = pred_result_to_dict(filename=pred_result_filename)
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	FPR = false_positive_rate_count(
 		sitename2value_dict=sitename2value_dict,
 		sitename_list=sitename_list,
 		cutoff = cutoff
 		)
+<<<<<<< HEAD
+=======
+	######################################
+	selected_sitename2value_dict = site_select_by_percentage(
+		valuedict=sitename2value_dict,
+		sitename_list=sitename_list,
+		cutoff_perventage=cutoff_perventage,
+		reverse=True
+		)
+	######################################
+	positive_result_write(
+		old_pos_filename = uncleaned_positive_filename,
+		new_pos_filename = cleaned_positive_filename,
+		valuedict = selected_sitename2value_dict
+		)
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	return FPR
 	################################

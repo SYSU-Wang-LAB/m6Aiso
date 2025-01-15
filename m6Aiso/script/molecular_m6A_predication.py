@@ -14,13 +14,20 @@ from torch.autograd import Variable
 ###################
 sys.path.insert(0,"../")
 sys.path.insert(0,"./m6Aiso/")
+<<<<<<< HEAD
 from m6Aiso.utils.dataload_for_model_using import dataload_for_read_level_m6A_using
+=======
+from m6Aiso.utils.dataload_for_model_using import dataload_for_read_level_m6A_using_by_step
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 from m6Aiso.utils.dataload_for_model_using import Datamake_for_read_level_m6A_using
 from m6Aiso.blocks.model import AttentionNet
 from m6Aiso.blocks.model import Res1dNet
 from m6Aiso.blocks.model import Res2dNet
 ###################
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 class m6A_predication():
 	def __init__(self,model_path,model_type,max_value_filename,min_value_filename):
 		self.model_path = model_path
@@ -28,6 +35,11 @@ class m6A_predication():
 		self.max_value_filename = max_value_filename
 		self.min_value_filename = min_value_filename
 		self.batch_size = 256
+<<<<<<< HEAD
+=======
+		self.colnames_list = []
+		self.max_lines = 1000000
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 
 	def model_load_for_using(self):
 		model = torch.load(self.model_path)
@@ -35,6 +47,7 @@ class m6A_predication():
 		############################
 		return model
 
+<<<<<<< HEAD
 	def data_load_for_using(self,signal_filename):
 		using_dataset,use_index2readname_dict = dataload_for_read_level_m6A_using(
 			use_filename=signal_filename,
@@ -45,6 +58,21 @@ class m6A_predication():
 			)
 		using_data_loader = DataLoader(dataset=using_dataset,batch_size=self.batch_size,shuffle=False,drop_last=False)
 		return using_data_loader,use_index2readname_dict
+=======
+	def data_load_for_using(self,signalfile):
+		using_dataset,use_index2readname_dict,colnames_list,endType = dataload_for_read_level_m6A_using_by_step(
+			usefile=signalfile,
+			colnames_list=self.colnames_list,
+			model_type=self.model_type,
+			target_label=1,
+			max_lines=self.max_lines,
+			max_value_filename=self.max_value_filename,
+			min_value_filename=self.min_value_filename
+			)
+		self.colnames_list = colnames_list
+		using_data_loader = DataLoader(dataset=using_dataset,batch_size=self.batch_size,shuffle=False,drop_last=False)
+		return using_data_loader,use_index2readname_dict,endType
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 
 	def pred_result_write(self,y_pred_list,index_using,use_index2sitename_dict,writefile):
 		index_list = index_using.tolist()
@@ -99,6 +127,7 @@ class m6A_predication():
 	def model_using(self,using_signal_filename,predict_result_filename):
 		####################
 		model = self.model_load_for_using()
+<<<<<<< HEAD
 		using_data_loader,use_index2readname_dict = self.data_load_for_using(signal_filename=using_signal_filename)
 		####################
 		if self.model_type == "1d":
@@ -115,12 +144,39 @@ class m6A_predication():
 				use_index2sitename_dict=use_index2readname_dict,
 				pred_result_save_filename=predict_result_filename
 				)
+=======
+		####################
+		signalfile = open(using_signal_filename,'r')
+		endType = True
+		while endType == True:
+			using_data_loader,use_index2readname_dict,endType_new = self.data_load_for_using(signalfile=signalfile)
+			####################
+			if self.model_type == "1d":
+				self.Predict_1d_model_using(
+					model=model,
+					using_loader=using_data_loader,
+					use_index2sitename_dict=use_index2readname_dict,
+					pred_result_save_filename=predict_result_filename
+					)
+			if self.model_type == "2d":
+				self.Predict_2d_model_using(
+					model=model,
+					using_loader=using_data_loader,
+					use_index2sitename_dict=use_index2readname_dict,
+					pred_result_save_filename=predict_result_filename
+					)
+			endType = endType_new
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 
 
 def args_make(parser):
 	print(sys.argv[0])
 	print(os.getcwd())
+<<<<<<< HEAD
 	parser.add_argument('--model_path',help='m6A predict model name for using',default="./m6Aiso/module/model_read_0_12.pt")
+=======
+	parser.add_argument('--model_path',help='m6A predict model name for using',default="./m6Aiso/module/semi_model_7mer.times_over.epoch_0.pt")
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	parser.add_argument('--model_type',help="1d or 2d",default="2d")
 	parser.add_argument('--using_signal_filename',required=True,help="Data perpare generated signal.tsv")
 	parser.add_argument('--predict_result_filename', required=True, help="model predicated molecular m6A level filename")
@@ -147,4 +203,8 @@ def main(args):
 	PRED.model_using(
 		using_signal_filename=args.using_signal_filename,
 		predict_result_filename=args.predict_result_filename
+<<<<<<< HEAD
 		)
+=======
+		)
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73

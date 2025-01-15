@@ -51,14 +51,24 @@ def file2dict(filename,max_value_list,min_value_list):
 	################
 	emdedding_dict = embedding_dict_make()
 	################
+<<<<<<< HEAD
 	df = pd.read_csv(filename,sep='\t')
+=======
+	df = pd.read_csv(filename,sep='\t',low_memory=False)
+	colnames_list = df.columns.tolist()
+	###########################################################
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	out_name_list = []
 	out_name2value_dict = {}
 	out_name2motif_dict = {}
 	out_sitename_list = []
 	out_sitename2name_dict = {}
 	for index,row in df.iterrows():
+<<<<<<< HEAD
 		value_list,motif_list = row2valuelist(row=row,emdedding_dict=emdedding_dict)
+=======
+		value_list,motif_list = row2valuelist(row=row,colnames_list=colnames_list,emdedding_dict=emdedding_dict)
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 		name = row["kmer_contig_readindex_tranpos"]
 		motif = row["kmer"]
 		try:
@@ -86,13 +96,65 @@ def file2dict(filename,max_value_list,min_value_list):
 	return out_name_list,out_name2value_dict,out_name2motif_dict,out_sitename_list,out_sitename2name_dict
 
 
+<<<<<<< HEAD
 def row2valuelist(row,emdedding_dict=None):
+=======
+def file2dict_by_step(f,max_value_list,min_value_list,max_lines,colnames_list):
+	emdedding_dict = embedding_dict_make()
+	out_name_list = []
+	out_name2value_dict = {}
+	out_name2motif_dict = {}
+	out_sitename_list = []
+	out_sitename2name_dict = {}
+	t = 0
+	while t <= max_lines:
+		str_x = f.readline()
+		if str_x == "":
+			return out_name_list,out_name2value_dict,out_name2motif_dict,colnames_list,out_sitename_list,out_sitename2name_dict,False
+			break;
+		str_x = str_x.strip("\n")
+		list_x = str_x.split("\t")
+		if list_x[0] == "chrom" or list_x[0] == "kmer":
+			colnames_list = list_x
+			continue
+		row = dict(zip(colnames_list,list_x))
+		value_list,motif_list = row2valuelist(row=row,colnames_list=colnames_list,emdedding_dict=emdedding_dict)
+		name = row["kmer_contig_readindex_tranpos"]
+		motif = row["kmer"]
+		try:
+			chrom = row["chrom"]
+			genepos = row["genepos"]
+			sitename = chrom+";"+str(genepos)+";"+motif
+		except:
+			sitename = "_".join(name.split("_")[0:2]+name.split("_")[3:])
+		###############
+		###############
+		normal_value_list = normalize_value_list_method_by_max_and_min(
+			max_value_list=max_value_list,
+			min_value_list=min_value_list,
+			input_value_list=value_list
+			)
+		out_name_list.append(name)
+		##### normal_value_list
+		out_name2value_dict[name] = normal_value_list
+		out_name2motif_dict[name] = motif_list
+		try:
+			out_sitename2name_dict[sitename].append(name)
+		except:
+			out_sitename2name_dict[sitename] = [name]
+			out_sitename_list.append(sitename)
+		t += 1
+	return out_name_list,out_name2value_dict,out_name2motif_dict,colnames_list,out_sitename_list,out_sitename2name_dict,True
+	
+def row2valuelist(row,colnames_list,emdedding_dict=None):
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	tmplist = []
 	###################################
 	kmer = row["kmer"]
 	baseflank = row["baseflank"]
 	name = row["kmer_contig_readindex_tranpos"]
 	###################################
+<<<<<<< HEAD
 	N1_mean = float(row["N1_mean"])
 	P0_mean = float(row["P0_mean"])
 	P1_mean = float(row["P1_mean"])
@@ -111,6 +173,27 @@ def row2valuelist(row,emdedding_dict=None):
 	value_list.append([P0_mean,P0_std,P0_length])
 	value_list.append([P1_mean,P1_std,P1_length])
 	return value_list,motif_list
+=======
+	#colnames_list = ['kmer','kmer_contig_readindex_tranpos','P1_mean','P1_std','P1_length','P0_mean','P0_std','P0_length','N1_mean','N1_std','N1_length','baseflank']
+	###################################
+	value_list = []
+	val_colnames_list = colnames_list[2:-1]
+	for i in range(len(val_colnames_list)//3):
+		k1 = val_colnames_list[i * 3 + 0]
+		k2 = val_colnames_list[i * 3 + 1]
+		k3 = val_colnames_list[i * 3 + 2]
+		v1 = float(row[k1])
+		v2 = float(row[k2])
+		v3 = float(row[k3])
+		value_list.append([v1,v2,v3])
+	motif_list = oneHot_encoding_sequence(sequence=baseflank)
+	#####################################
+	value_array = np.array(value_list)
+	motif_array = np.array(motif_list)
+
+	#motif_list = embedding_sequence(sequence=baseflank,embedding_dict=emdedding_dict)
+	return value_array,motif_array
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	#####################################
 
 def oneHot_encoding_sequence(sequence):

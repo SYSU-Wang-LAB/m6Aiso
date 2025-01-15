@@ -74,7 +74,11 @@ def Predict_model_using(model_type,using_model_list,using_loader,use_index2siten
 			)
 	if model_type == "1d":
 		Predict_1d_model_using(
+<<<<<<< HEAD
 			using_model_list=model_list,
+=======
+			using_model_list=using_model_list,
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 			using_loader=using_loader,
 			use_index2sitename_dict=use_index2sitename_dict,
 			pred_result_save_filename=pred_result_save_filename

@@ -14,6 +14,10 @@ def positive_data_motif_dict_make(pos_filename):
 		if list_x[0]=="chrom" or list_x[0]=="kmer":
 			motif_index = list_x.index("kmer")
 			baseflank_index = list_x.index("baseflank")
+<<<<<<< HEAD
+=======
+			header = list_x
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 			continue
 		motif = list_x[motif_index]
 		baseflank = list_x[baseflank_index]
@@ -21,7 +25,11 @@ def positive_data_motif_dict_make(pos_filename):
 			outdict[baseflank] +=1
 		except:
 			outdict[baseflank] = 1
+<<<<<<< HEAD
 	return outdict
+=======
+	return outdict,header
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 
 def negative_data_motif_dict_make(neg_filename):
 	"""
@@ -77,10 +85,17 @@ def motif_balance(pos_motif2count_dict,neg_motif2readname_dict,min_negative_samp
 			outdict[motif] = multi_neg_readname_list[:pos_count]
 	return outdict
 
+<<<<<<< HEAD
 def balance_neg_result_write(filename,balanced_neg_motif2readname_dict,neg_readname2value_dict):
 	d = open(filename,'a')
 	###############################
 	str2write = "\t".join(['kmer','kmer_contig_readindex_tranpos','P1_mean','P1_std','P1_length','P0_mean','P0_std','P0_length','N1_mean','N1_std','N1_length','baseflank']) + "\n"
+=======
+def balance_neg_result_write(filename,balanced_neg_motif2readname_dict,neg_readname2value_dict,header):
+	d = open(filename,'a')
+	###############################
+	str2write = "\t".join(header) + "\n"
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	d.write(str2write)
 	###############################
 	repcount_dict = {}
@@ -100,7 +115,11 @@ def balance_neg_result_write(filename,balanced_neg_motif2readname_dict,neg_readn
 			d.write(str2write)
 
 def motif_balance_neg_data_make(apobe_neg_filename,apobe_pos_filename,balan_neg_filename,min_negative_sample_number=1000,negative_over_sample_number=25):
+<<<<<<< HEAD
 	pos_motif2count_dict = positive_data_motif_dict_make(pos_filename=apobe_pos_filename)
+=======
+	pos_motif2count_dict,header = positive_data_motif_dict_make(pos_filename=apobe_pos_filename)
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	neg_motif2readname_dict,neg_readname2value_dict = negative_data_motif_dict_make(neg_filename=apobe_neg_filename)
 	balanced_neg_motif2readname_dict = motif_balance(
 		pos_motif2count_dict=pos_motif2count_dict,
@@ -112,4 +131,8 @@ def motif_balance_neg_data_make(apobe_neg_filename,apobe_pos_filename,balan_neg_
 		filename=balan_neg_filename,
 		balanced_neg_motif2readname_dict=balanced_neg_motif2readname_dict,
 		neg_readname2value_dict=neg_readname2value_dict,
+<<<<<<< HEAD
+=======
+		header=header
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 		)

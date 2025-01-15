@@ -1,6 +1,10 @@
 
 from .dataload_for_model_train import dataload_for_read_level_m6A_pred,Datamake_for_read_level_m6A_pred
+<<<<<<< HEAD
 from .dataload_for_model_using import dataload_for_read_level_m6A_using,Datamake_for_read_level_m6A_using
+=======
+from .dataload_for_model_using import dataload_for_read_level_m6A_using,dataload_for_read_level_m6A_using_by_step,Datamake_for_read_level_m6A_using
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 from .get_activation import get_activate_function
 from .get_evaluate import model_evaluate
 from .get_lossfunction import self_binary_cross_entropy_loss,self_defined_BCEloss
@@ -16,6 +20,10 @@ __all__ = [
 	'dataload_for_read_level_m6A_pred',
 	'Datamake_for_read_level_m6A_pred',
 	'dataload_for_read_level_m6A_using',
+<<<<<<< HEAD
+=======
+	'dataload_for_read_level_m6A_using_by_step',
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	'Datamake_for_read_level_m6A_using',
 	'get_activate_function',
 	'model_evaluate',

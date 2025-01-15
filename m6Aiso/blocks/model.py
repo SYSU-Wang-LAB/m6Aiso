@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+=======
+import sys
+
+#print(sys.path)
+sys.path.insert(0,"../../")
+sys.path.insert(0,"../../m6Aiso/")
+#print(sys.path)
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -22,9 +31,15 @@ class AttentionNet(nn.Module):
 			)
 		self.attention_layer = MultiHead_attention(d_model=d_model,header_num=2,dropout_ratio=0.2)
 		self.ffn = PositionwiseFeedForward(d_model=d_model,hidden_size=8,drop_ratio=0.2)
+<<<<<<< HEAD
 		self.global_pooling = nn.MaxPool1d(kernel_size=3,stride=1,padding=1)
 		self.full_connect = nn.Sequential(
 			nn.Linear(d_model*3,16),
+=======
+		self.global_pooling = nn.AdaptiveMaxPool1d(1)
+		self.full_connect = nn.Sequential(
+			nn.Linear(d_model,16),
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 			nn.ReLU(),
 			nn.Linear(16,1),
 			nn.Sigmoid()
@@ -42,8 +57,13 @@ class AttentionNet(nn.Module):
 		out = self.global_pooling(out)
 		out = out.reshape(out.size(0),-1)
 		y_read = self.full_connect(out)
+<<<<<<< HEAD
 		y_site = self.site_m6A_pred(y_read)
 		return y_read,y_site
+=======
+		#y_site = self.site_m6A_pred(y_read)
+		return y_read,y_read
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 
 	def site_m6A_pred(self,y_read):
 		y_pred = y_read.reshape(-1)
@@ -89,7 +109,13 @@ class Res2dNet(nn.Module):
 	def forward(self,value,motif):
 		mot1 = self.conv_motif(motif)
 		###############
+<<<<<<< HEAD
 		mot2 = mot1.view(mot1.size()[0],1,mot1.size()[1],mot1.size()[2])
+=======
+		###############
+		mot2 = mot1.view(mot1.size()[0],1,mot1.size()[1],mot1.size()[2])
+		#value = value.view(value.size()[0],1,value.size()[1],value.size()[2])
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 		x = torch.concat((mot2,value),dim=2)
 		###############
 		res1 = self.conv_layer_1(x)
@@ -99,8 +125,13 @@ class Res2dNet(nn.Module):
 		out = self.global_pooling(out)
 		out = out.reshape(out.size(0),-1)
 		y_read = self.full_connect(out)
+<<<<<<< HEAD
 		y_site = self.site_m6A_pred(y_read)
 		return y_read,y_site
+=======
+		#y_site = self.site_m6A_pred(y_read)
+		return y_read,y_read
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 
 	def site_m6A_pred(self,y_read):
 		y_pred = y_read.reshape(-1)
@@ -134,9 +165,15 @@ class Res1dNet(nn.Module):
 			nn.ReLU(),
 			nn.Dropout(p=0.2,inplace=False)
 			)
+<<<<<<< HEAD
 		self.global_pooling = nn.MaxPool1d(kernel_size=3,stride=1,padding=1)
 		self.full_connect = nn.Sequential(
 			nn.Linear(d_model*3,16),
+=======
+		self.global_pooling = nn.AdaptiveMaxPool1d(1)
+		self.full_connect = nn.Sequential(
+			nn.Linear(d_model,16),
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 			nn.ReLU(),
 			nn.Linear(16,1),
 			nn.Sigmoid()
@@ -152,8 +189,13 @@ class Res1dNet(nn.Module):
 		out = self.global_pooling(out)
 		out = out.reshape(out.size(0),-1)
 		y_read = self.full_connect(out)
+<<<<<<< HEAD
 		y_site = self.site_m6A_pred(y_read)
 		return y_read,y_site
+=======
+		#y_site = self.site_m6A_pred(y_read)
+		return y_read,y_read
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 
 	def site_m6A_pred(self,y_read):
 		y_pred = y_read.reshape(-1)
@@ -161,3 +203,44 @@ class Res1dNet(nn.Module):
 		y_site = 1 - torch.prod((1 - y_pred_top5),axis=-1)
 		return y_site
 
+<<<<<<< HEAD
+=======
+if __name__ == "__main__":
+	Net2d = Res2dNet()
+	Net1d = Res1dNet()
+	NetAt = AttentionNet()
+	#############################
+	sum_2d = sum(p.numel() for p in Net2d.parameters())
+	print(sum_2d)
+	#############################
+	sequence_batch=torch.randn((64,4,9))
+	dwell_time_batch=torch.randn((64,1,3,5))
+	Net2d(value=dwell_time_batch,motif=sequence_batch)
+	#############################
+	sequence_batch=torch.randn((64,4,9))
+	dwell_time_batch=torch.randn((64,3,5))
+	Net1d(value=dwell_time_batch,motif=sequence_batch)
+	NetAt(value=dwell_time_batch,motif=sequence_batch)
+	print("##############################################")
+	#############################
+	sequence_batch=torch.randn((64,4,7))
+	dwell_time_batch=torch.randn((64,1,3,3))
+	Net2d(value=dwell_time_batch,motif=sequence_batch)
+	######################################################
+	sequence_batch=torch.randn((64,4,9))
+	dwell_time_batch=torch.randn((64,3,5))
+	Net1d(value=dwell_time_batch,motif=sequence_batch)
+	NetAt(value=dwell_time_batch,motif=sequence_batch)
+	print("##############################################")
+	#############################
+	sequence_batch=torch.randn((64,4,11))
+	dwell_time_batch=torch.randn((64,1,3,7))
+	Net2d(value=dwell_time_batch,motif=sequence_batch)
+	###################################################
+	sequence_batch=torch.randn((64,4,11))
+	dwell_time_batch=torch.randn((64,3,7))
+	Net1d(value=dwell_time_batch,motif=sequence_batch)
+	NetAt(value=dwell_time_batch,motif=sequence_batch)
+	print("##############################################")
+
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73

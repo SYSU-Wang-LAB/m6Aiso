@@ -3,6 +3,10 @@ import numpy as np
 #####################################
 from .dataload_utils import extrem_value_load_form_file
 from .dataload_utils import file2dict
+<<<<<<< HEAD
+=======
+from .dataload_utils import file2dict_by_step
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 from .dataload_utils import label_dict_merge
 from .dataload_utils import value_dict_merge
 from .dataload_utils import kfold_split_namelist
@@ -13,15 +17,59 @@ from .dataload_utils import sitename_splited_array_make
 from .dataload_utils import using_numpy_array_make
 from torch.utils.data import Dataset,DataLoader
 
+<<<<<<< HEAD
 def dataload_for_read_level_m6A_using(use_filename,model_type,target_label,max_value_filename,min_value_filename):
 	merge_max_value_list = extrem_value_load_form_file(filename=max_value_filename)
 	merge_min_value_list = extrem_value_load_form_file(filename=min_value_filename)
 	use_name_list,use_name2value_dict,use_name2motif_dict,_,_ = file2dict(
+=======
+def dataload_for_read_level_m6A_using_by_step(usefile,colnames_list,model_type,target_label,max_lines,max_value_filename,min_value_filename):
+	merge_max_value_list = extrem_value_load_form_file(filename=max_value_filename)
+	merge_min_value_list = extrem_value_load_form_file(filename=min_value_filename)
+	use_name_list,use_name2value_dict,use_name2motif_dict,colnames_list,use_sitename_list,use_sitename2name_dict,endType = file2dict_by_step(
+		f=usefile,
+		max_value_list=merge_max_value_list,
+		min_value_list=merge_min_value_list,
+		max_lines=max_lines,
+		colnames_list=colnames_list
+		)
+	out_index_list,use_index2readname_dict,out_label_list = readname_list_to_index(use_name_list=use_name_list,target_label=target_label)
+	out_label_array = np.array(out_label_list,dtype = np.float32)
+	out_index_array = np.array(out_index_list,dtype = np.float32)
+	use_x_value_list,use_m_motif_list = using_numpy_array_make(namelist=use_name_list,merge_value_x_dict=use_name2value_dict,merge_motif_m_dict=use_name2motif_dict)
+	############
+	if model_type == "2d":
+		use_x_value_array = use_x_value_list.reshape(use_x_value_list.shape[0],1,use_x_value_list.shape[1],use_x_value_list.shape[2])
+		use_m_motif_array = use_m_motif_list.reshape(use_m_motif_list.shape[0],use_m_motif_list.shape[1],use_m_motif_list.shape[2])
+	else:
+		use_x_value_array = use_x_value_list
+		use_m_motif_array = use_m_motif_list
+	############
+	using_dataset = Datamake_for_read_level_m6A_using(
+		data_feature_1=use_x_value_array,
+		data_feature_2=use_m_motif_array,
+		data_feature_3=out_index_array,
+		data_target=out_label_array
+		)
+	return using_dataset,use_index2readname_dict,colnames_list,endType
+
+def dataload_for_read_level_m6A_using(use_filename,model_type,target_label,max_value_filename,min_value_filename):
+	merge_max_value_list = extrem_value_load_form_file(filename=max_value_filename)
+	merge_min_value_list = extrem_value_load_form_file(filename=min_value_filename)
+	use_name_list,use_name2value_dict,use_name2motif_dict,use_sitename_list,use_sitename2name_dict = file2dict(
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 		filename=use_filename,
 		max_value_list=merge_max_value_list,
 		min_value_list=merge_min_value_list
 		)
+<<<<<<< HEAD
 	out_index_list,use_index2readname_dict,out_label_list = readname_list_to_index(use_name_list=use_name_list,target_label=target_label)
+=======
+	out_index_list,use_index2readname_dict,out_label_list = readname_list_to_index(
+		use_name_list=use_name_list,
+		target_label=target_label
+		)
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 	out_label_array = np.array(out_label_list,dtype = np.float32)
 	out_index_array = np.array(out_index_list,dtype = np.float32)
 	use_x_value_list,use_m_motif_list = using_numpy_array_make(namelist=use_name_list,merge_value_x_dict=use_name2value_dict,merge_motif_m_dict=use_name2motif_dict)

@@ -198,7 +198,11 @@ def candidate_position_filtering(centerregion, outpath):
             idname = '{}_{}_{}_{}'.format(kmer, key[0], key[1], key[2])
 
             normvalues =  centerregion[key]['-1'][:3] + centerregion[key]['0'][:3] + centerregion[key]['1'][:3]
+<<<<<<< HEAD
             flankkmer = centerregion[key]['-1'][-1][0] + centerregion[key]['0'][-1] + centerregion[key]['1'][-1][-1]
+=======
+            flankkmer = centerregion[key]['1'][-1][0] + centerregion[key]['0'][-1] + centerregion[key]['-1'][-1][-1]
+>>>>>>> 8bb8c32c95bbe02f5c81c3e5799b804df94dcf73
 
             candidatefilter = '\t'.join(['{}'.format(i) for i in ([kmer, idname] + normvalues)])
             
