@@ -1,0 +1,1 @@
+python semi_supervised_model_train.py --model_name Res2dNet --orginal_pos_filename ../data/orginal/merge_apobec.positive.sample.baseflank.tsv --orginal_neg_filename ../data/orginal/merge_apobec.negative.sample.baseflank.tsv --max_value_filename ../data/merge_max_value_list.txt --min_value_filename ../data/merge_min_value_list.txt --out_dir out_dict 
