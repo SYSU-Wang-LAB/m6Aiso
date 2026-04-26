@@ -3,6 +3,8 @@
 
 m6Aiso is a convolutional neural network (CNN)-based model designed for the detection of m6A modifications from nanopore direct RNA sequencing data. The model is developed by leveraging endogenously labeled m6A-modified signals and a semi-supervised framework.
 
+For the version of m6Aiso designed for the RNA004 kit, please refer to: https://github.com/SYSU-Wang-LAB/m6Aiso-RNA004.
+
 # Table of Contents
 - **[Running m6Aiso](#running-m6aiso)**<br>
     - **[Requirements](#requirement)**<br>
